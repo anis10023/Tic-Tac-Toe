@@ -3,9 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
     <title>Tic-Tac-Toe</title>
 </head>
 <body>
+    <header>
+        <h1><span>Tic-Tac-Toe</span><span class="color-effect">New!</span></h1>
+        <div class="scoreBoard">
+
+            <div class="player1-wrapper">
+                <p>Player 1:</p>
+                <p class="player1Score">0</p>
+            </div>
+
+            <div class="player2-wrapper">
+                <p>Player 2:</p>
+                <p class="player2Score">0</p>
+            </div>
+
+        </div>
+    </header>
+    <main>
+        <div class="gameBoardGrid">
+            <div class="box" data-id="1" >&nbsp;</div>
+            <div class="box" data-id="2" >&nbsp;</div>
+            <div class="box" data-id="3" >&nbsp;</div>
+            <div class="box" data-id="4" >&nbsp;</div>
+            <div class="box" data-id="5" >&nbsp;</div>
+            <div class="box" data-id="6" >&nbsp;</div>
+            <div class="box" data-id="7" >&nbsp;</div>
+            <div class="box" data-id="8" >&nbsp;</div>
+            <div class="box" data-id="9" >&nbsp;</div>
+        </div>
+    </main>
+    <footer><p>Anis10023</p></footer>
     
 </body>
-</html>l
+</html>
