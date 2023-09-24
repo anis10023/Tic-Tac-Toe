@@ -115,7 +115,7 @@ function isBoardFull() {
     for (j = 0; j < Gameboard.boxes[i].length; j++) {
       if (Gameboard.boxes[i][j] === "X" || Gameboard.boxes[i][j] === "O") {
         spotsFilled++;
-        console.log(spotsFilled);
+        // console.log(spotsFilled);
       }
     }
   }
@@ -129,15 +129,44 @@ function isBoardFull() {
 }
 
 function isWon() {
-  if (
-    (Gameboard.boxes[0][0] === Gameboard.boxes[0][0]) ===
-    Gameboard.boxes[0][0]
-  ) {
+  for (i = 0; i < Gameboard.boxes.length; i++) {
+    //Horizontal 3 in a row
+    if (
+      Gameboard.boxes[i][0] &&
+      Gameboard.boxes[i][1] &&
+      Gameboard.boxes[i][2] === "X"
+    ) {
+      gameState.won = true;
+    }
+    if (
+      Gameboard.boxes[i][0] &&
+      Gameboard.boxes[i][1] &&
+      Gameboard.boxes[i][2] === "O"
+    ) {
+      gameState.won = true;
+    }
+    //Vertical 3 in a row
+    if (
+      Gameboard.boxes[0][i] &&
+      Gameboard.boxes[1][i] &&
+      Gameboard.boxes[2][i] === "X"
+    ) {
+      gameState.won = true;
+    }
+    if (
+      Gameboard.boxes[0][i] &&
+      Gameboard.boxes[1][i] &&
+      Gameboard.boxes[2][i] === "O"
+    ) {
+      gameState.won = true;
+    }
   }
 }
 
 function gameRules() {
   isBoardFull();
+  isWon();
+  console.log(gameState.won);
 }
 
 function displayAlgorithm() {
