@@ -9,13 +9,15 @@ const Gameboard = (() => {
   const add = (XO, row, column) => (boxes[row][column] = `${XO}`);
   const reset = () => {
     //! Don't understand why I wasn't allowed to just redefine the array
-    for (i = 0; i < Gameboard.boxes.length; i++) {
-      for (j = 0; j < Gameboard.boxes[i].length; j++) {
-        if (Gameboard.boxes[i][j] !== "") {
-          Gameboard.boxes[i][j] = "";
+    setTimeout(() => {
+      for (i = 0; i < Gameboard.boxes.length; i++) {
+        for (j = 0; j < Gameboard.boxes[i].length; j++) {
+          if (Gameboard.boxes[i][j] !== "") {
+            Gameboard.boxes[i][j] = "";
+          }
         }
       }
-    }
+    }, 650);
   };
   return { boxes, add, reset };
 })();
@@ -103,7 +105,7 @@ function resetBoxesUI() {
     boxes.forEach((box) => {
       box.textContent = "";
     });
-  }, 750);
+  }, 650);
 }
 
 function convert1D_array(index) {
@@ -127,6 +129,10 @@ function turnSwapping(index) {
     Gameboard.boxes[row][column] === "X" ||
     Gameboard.boxes[row][column] === "O"
   ) {
+    return;
+  }
+
+  if (GameState.won === true) {
     return;
   }
 
@@ -232,12 +238,15 @@ function whoWonRound() {
   }
 
   if (GameState.won === true) {
-    GameState.won = false;
+    disableEventListener();
+    setTimeout(() => (GameState.won = false), 750);
     updateScores();
     Gameboard.reset();
     resetBoxesUI();
     GameState.player1_turn = true;
     GameState.player2_turn = false;
+  } else {
+    enableEventListener();
   }
 }
 
@@ -295,5 +304,3 @@ boxes.forEach((box) => {
     render(index);
   });
 });
-
-// function getPlayerDetails() {}

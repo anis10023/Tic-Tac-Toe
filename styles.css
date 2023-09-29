@@ -22,8 +22,8 @@
     --font-family-title: 'Montserrat', sans-serif;
     --font-family-normal: 'Roboto', sans-serif;
 
-    --lg-font:2.5rem;
-    --md-font:1.5rem;
+    --lg-font:3.5rem;
+    --md-font:2rem;
     --sm-font:0.8rem;
 
     --curve: 6px;
@@ -57,7 +57,7 @@ h1{
 
 h1 > span:last-child{
     position: relative;
-    bottom: 25px;
+    bottom: 35px;
     right: 5px;
     font-size: 0.8rem;
     color: var(--primary);
@@ -169,15 +169,31 @@ header:first-child{
 .scoreBoard > div {
     display: grid;
     grid-template-rows: auto auto;
-    padding: 10px;
+    padding: 10px 30px;
     border-radius: var(--curve);
     background-color: var(--primary);
     font-size: var(--md-font);
     color: var(--text);
+    border: solid 1px var(--text);
+}
+
+.scoreBoard > div > p {
+    text-align: center;
+    font-size: 4.5rem;
 }
 
 .scoreBoard > div > p:first-child{
     font-size: var(--sm-font);
+}
+
+.turn-info{
+    color: var(--text);
+    text-align:center;
+}
+
+.turn-info span{
+    color: var(--primary);
+    font-size: var(--md-font);
 }
 
 main{
