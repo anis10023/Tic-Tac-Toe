@@ -20,26 +20,6 @@ const Gameboard = (() => {
   return { boxes, add, reset };
 })();
 
-function DisplayScore(player1Score, player2Score) {
-  const getPlayer1Score = () => player1Score;
-  const getPlayer2Score = () => player2Score;
-  const increasePlayer1Score = () => (player1Score = player1Score + 1);
-  const increasePlayer2Score = () => (player2Score = player2Score + 1);
-  const resetScores = () => {
-    player1Score = 0;
-    player2Score = 0;
-  };
-  return {
-    getPlayer1Score,
-    getPlayer2Score,
-    increasePlayer1Score,
-    increasePlayer2Score,
-    resetScores,
-  };
-}
-
-const displayScore = DisplayScore(0, 0);
-
 //Game state module
 const GameState = (() => {
   let player1_turn = true;
@@ -73,6 +53,26 @@ function Player(name, number, type, int) {
 const player1 = Player("Player 1", 1, "X", 0);
 const player2 = Player("Player 2", 2, "O");
 
+function DisplayScore(player1Score, player2Score) {
+  const getPlayer1Score = () => player1Score;
+  const getPlayer2Score = () => player2Score;
+  const increasePlayer1Score = () => (player1Score = player1Score + 1);
+  const increasePlayer2Score = () => (player2Score = player2Score + 1);
+  const resetScores = () => {
+    player1Score = 0;
+    player2Score = 0;
+  };
+  return {
+    getPlayer1Score,
+    getPlayer2Score,
+    increasePlayer1Score,
+    increasePlayer2Score,
+    resetScores,
+  };
+}
+
+const displayScore = DisplayScore(0, 0);
+
 //&&User interface
 //Grab existing DOM elements
 const boxes = document.querySelectorAll(".box");
@@ -82,22 +82,28 @@ const gameDialog = document.querySelector("#game");
 
 function gameMessage(message) {
   const gameText = document.createElement("p");
-  gameText.classList.add("gameText");
+  gameText.classList.add("gameTextStyling");
   gameText.textContent = message;
+  gameText.classList.add("openGameText");
   gameDialog.appendChild(gameText);
-  gameDialog.showModal();
-  //   setTimeout(gameDialog.close(), 10000);
+  setTimeout(() => {
+    // gameText.classList.remove("openGameText");
+  }, 3000);
 }
 
 function updateScores() {
-  player1Score.textContent = `${displayScore.getPlayer1Score()}`;
-  player2Score.textContent = `${displayScore.getPlayer2Score()}`;
+  setTimeout(() => {
+    player1Score.textContent = `${displayScore.getPlayer1Score()}`;
+    player2Score.textContent = `${displayScore.getPlayer2Score()}`;
+  }, 750);
 }
 
 function resetBoxesUI() {
-  boxes.forEach((box) => {
-    box.textContent = "";
-  });
+  setTimeout(() => {
+    boxes.forEach((box) => {
+      box.textContent = "";
+    });
+  }, 750);
 }
 
 function convert1D_array(index) {
@@ -147,7 +153,7 @@ function isDraw() {
   }
   // When game is a draw
   if (spotsFilled === 9 && GameState.won === false) {
-    Gameboard.reset;
+    Gameboard.reset();
     GameState.endGame = true;
     resetBoxesUI();
     gameMessage("Draw!");
@@ -256,9 +262,6 @@ function gameRules() {
   whoWonRound();
   isGameWon();
   console.log(GameState.won);
-  //   if (GameState.won === true) {
-  //     console.log("Game finished");
-  //   }
 }
 
 function displayAlgorithm() {
