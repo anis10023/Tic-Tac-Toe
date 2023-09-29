@@ -8,30 +8,23 @@ const Gameboard = (() => {
   ];
   const add = (XO, row, column) => (boxes[row][column] = `${XO}`);
   const reset = () => {
-    Gameboard.boxes = [
-      ["", "", ""],
-      ["", "", ""],
-      ["", "", ""],
-    ];
+    //! Don't understand why I wasn't allowed to just redefine the array
+    for (i = 0; i < Gameboard.boxes.length; i++) {
+      for (j = 0; j < Gameboard.boxes[i].length; j++) {
+        if (Gameboard.boxes[i][j] !== "") {
+          Gameboard.boxes[i][j] = "";
+        }
+      }
+    }
   };
   return { boxes, add, reset };
 })();
 
-const DisplayScore = (() => {
-  let player1Score = 0;
-  let player2Score = 0;
-  const getPlayer1Score = () => {
-    player1Score;
-  };
-  const getPlayer2Score = () => {
-    player2Score;
-  };
-  const increasePlayer1Score = () => {
-    player1Score++;
-  };
-  const increasePlayer2Score = () => {
-    player2Score++;
-  };
+function DisplayScore(player1Score, player2Score) {
+  const getPlayer1Score = () => player1Score;
+  const getPlayer2Score = () => player2Score;
+  const increasePlayer1Score = () => (player1Score = player1Score + 1);
+  const increasePlayer2Score = () => (player2Score = player2Score + 1);
   const resetScores = () => {
     player1Score = 0;
     player2Score = 0;
@@ -43,7 +36,9 @@ const DisplayScore = (() => {
     increasePlayer2Score,
     resetScores,
   };
-})();
+}
+
+const displayScore = DisplayScore(0, 0);
 
 //Game state module
 const GameState = (() => {
@@ -95,8 +90,8 @@ function gameMessage(message) {
 }
 
 function updateScores() {
-  player1Score.textContent = `${DisplayScore.getPlayer1Score}`;
-  player2Score.textContent = `${DisplayScore.getPlayer2Score}`;
+  player1Score.textContent = `${displayScore.getPlayer1Score()}`;
+  player2Score.textContent = `${displayScore.getPlayer2Score()}`;
 }
 
 function resetBoxesUI() {
@@ -136,8 +131,8 @@ function turnSwapping(index) {
     GameState.player2_turn = true;
   } else if (GameState.player2_turn) {
     Gameboard.add("O", row, column);
-    GameState.player2_turn = false;
     GameState.player1_turn = true;
+    GameState.player2_turn = false;
   }
 }
 
@@ -168,7 +163,7 @@ function whoWonRound() {
       Gameboard.boxes[i][1] === "X" &&
       Gameboard.boxes[i][2] === "X"
     ) {
-      DisplayScore.increasePlayer1Score;
+      displayScore.increasePlayer1Score();
       GameState.won = true;
     }
     if (
@@ -176,7 +171,7 @@ function whoWonRound() {
       Gameboard.boxes[i][1] === "O" &&
       Gameboard.boxes[i][2] === "O"
     ) {
-      DisplayScore.increasePlayer2Score;
+      displayScore.increasePlayer2Score();
       GameState.won = true;
     }
     //Vertical 3 in a row
@@ -185,7 +180,7 @@ function whoWonRound() {
       Gameboard.boxes[1][i] === "X" &&
       Gameboard.boxes[2][i] === "X"
     ) {
-      DisplayScore.increasePlayer1Score;
+      displayScore.increasePlayer1Score();
       GameState.won = true;
     }
     if (
@@ -193,66 +188,65 @@ function whoWonRound() {
       Gameboard.boxes[1][i] === "O" &&
       Gameboard.boxes[2][i] === "O"
     ) {
-      DisplayScore.increasePlayer2Score;
+      displayScore.increasePlayer2Score();
       GameState.won = true;
     }
-    //Diagonal 3 in a row
-    if (
-      Gameboard.boxes[0][0] === "X" &&
-      Gameboard.boxes[1][1] === "X" &&
-      Gameboard.boxes[2][2] === "X"
-    ) {
-      DisplayScore.increasePlayer1Score;
-      GameState.won = true;
-    }
-    if (
-      Gameboard.boxes[0][0] === "O" &&
-      Gameboard.boxes[1][1] === "O" &&
-      Gameboard.boxes[2][2] === "O"
-    ) {
-      DisplayScore.increasePlayer2Score;
-      GameState.won = true;
-    }
-    if (
-      Gameboard.boxes[0][2] === "X" &&
-      Gameboard.boxes[1][1] === "X" &&
-      Gameboard.boxes[2][0] === "X"
-    ) {
-      DisplayScore.increasePlayer1Score;
-      GameState.won = true;
-    }
-    if (
-      Gameboard.boxes[0][2] === "O" &&
-      Gameboard.boxes[1][1] === "O" &&
-      Gameboard.boxes[2][0] === "O"
-    ) {
-      DisplayScore.increasePlayer2Score;
-      GameState.won = true;
-    }
+  }
 
-    if (GameState.won === true) {
-      GameState.won = false;
-      //   updateScores();
-      Gameboard.reset();
-      resetBoxesUI();
-      GameState.player1_turn = true;
-      GameState.player2_turn = false;
-    }
+  //Diagonal 3 in a row
+  if (
+    Gameboard.boxes[0][0] === "X" &&
+    Gameboard.boxes[1][1] === "X" &&
+    Gameboard.boxes[2][2] === "X"
+  ) {
+    displayScore.increasePlayer1Score();
+    GameState.won = true;
+  } else if (
+    Gameboard.boxes[0][0] === "O" &&
+    Gameboard.boxes[1][1] === "O" &&
+    Gameboard.boxes[2][2] === "O"
+  ) {
+    displayScore.increasePlayer2Score();
+    GameState.won = true;
+  }
+  if (
+    Gameboard.boxes[0][2] === "X" &&
+    Gameboard.boxes[1][1] === "X" &&
+    Gameboard.boxes[2][0] === "X"
+  ) {
+    displayScore.increasePlayer1Score();
+    GameState.won = true;
+  } else if (
+    Gameboard.boxes[0][2] === "O" &&
+    Gameboard.boxes[1][1] === "O" &&
+    Gameboard.boxes[2][0] === "O"
+  ) {
+    displayScore.increasePlayer2Score();
+    GameState.won = true;
+  }
+
+  if (GameState.won === true) {
+    GameState.won = false;
+    updateScores();
+    Gameboard.reset();
+    resetBoxesUI();
+    GameState.player1_turn = true;
+    GameState.player2_turn = false;
   }
 }
 
 function isGameWon() {
-  if (DisplayScore.getPlayer1Score === 5) {
+  if (displayScore.getPlayer1Score() === 5) {
     Gameboard.reset();
     resetBoxesUI();
-    DisplayScore.resetScores;
+    displayScore.resetScores();
     gameMessage("Player 1 Won!");
   }
 
-  if (DisplayScore.getPlayer2Score === 5) {
+  if (displayScore.getPlayer2Score() === 5) {
     Gameboard.reset();
     resetBoxesUI();
-    DisplayScore.resetScores;
+    displayScore.resetScores();
     gameMessage("Player 2 Won!");
   }
 }
