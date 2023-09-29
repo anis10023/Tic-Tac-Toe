@@ -238,15 +238,12 @@ function whoWonRound() {
   }
 
   if (GameState.won === true) {
-    disableEventListener();
     setTimeout(() => (GameState.won = false), 750);
     updateScores();
     Gameboard.reset();
     resetBoxesUI();
     GameState.player1_turn = true;
     GameState.player2_turn = false;
-  } else {
-    enableEventListener();
   }
 }
 
